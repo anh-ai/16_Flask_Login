@@ -42,7 +42,29 @@ Chương trình có các chức năng chính sau:
    - Phân quyền: khi user hiện tại là admin thì menu này sẽ hiện lên.
    - Tự động lưu trạng thái đăng nhập của User ở phiên làm việc trước đó thời gian lưu là 3 tháng.
    - Cơ sở dữ liệu là SQLite3, có thể xoá file database đi để chương trình tự tạo file mới. Lúc này không có user mặc định. Cần set quyền admin trực tiếp trong DB.    
- 
+2. Hiển thị nội dung theo phân quyền
+
+## Kỹ thuật code
+1. Python Flask có dùng template
+2. Python với database SQlite, lưu file ngay tại thư mục gốc
+3. cách xử lý login/logout/create user
+4. Cách lưu section, nhớ user đăng nhập để lần sau không cần đăng nhập nữa
+5. Cách validate username/pass
+6. Cách phân quyền cho entry point, kiểu như cần phải đăng nhập rồi mới chạy thì: `@login_required`, cần admin thì: `@admin_required`
+7. Cách sử dụng template trong các folder khác nhau
+8. Cách dùng file config, kết quả lưu vào yaml để dễ cấu hình, chỉnh sửa bằng tay
+9. Templates:
+    1. Cách dùng template đa tẩng (`ta_base.html` chứa khung => `index.html` chứa nội dung): dùng `{% extends "ta_base.html" -%}`
+    2. Dùng `{% include "partials/Home.html" %}`: Trong `index.html` có chia html ra thành nhiều thành phần nhỏ, cái này không phải đa tầng, mà là phân chia nhỏ code
+    3. Cách phân quyền trong template: `{% if session['role'] in ['Admin', 'Manager'] %}...{% else %}...{% endif %}`: nghĩa là user phải là 'Admin' hoặc 'Manager' thì mới làm gì đó, hoặc hiển thị nội dung theo user
+    4. Cách dùng `macro` trong template (trong file `templates/partials/configs.html` và `templates/Modules/admin.html`)
+        - Trong `configs.html` thì cách dùng đơn giản hơn, viết macro trong file đó rồi dùng luôn
+        - Trong `admin.html` thì cao cấp hơn nhiều: `macro` được khai báo trong file riêng, thành thư viện dùng chung của cả hệ thống được. Có chỉ định tham số, có thể khai báo nhiều `macro`, và dùng 1 `macro` cho nhiều chức năng khác nhau được.
+        - Filter: Trong file `admin.html` cũng có chức năng filter table, có thể lọc dữ liệu theo toàn bộ các cột hoặc 1 cột chỉ định trước.
++ Ajax: 
+    * Trong file `templates/partials/configs.html` có hướng dẫn cách khai báo Ajax chuẩn và entry point của nó `url: '/update'` cùng cách lấy dữ liệu trên form, hiển thị alert trong js
+    * trong file `admin.html` có khai báo 1 ajax tiêu chuẩn, có thể sử dụng tương tự cho các tác vụ khác
+      
 
 
 
