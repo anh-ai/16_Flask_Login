@@ -27,6 +27,8 @@ Dưới đây là một ví dụ về cách sử dụng Flask, Bootstrap 5, HTML
 ```bash
 pip install -r req.txt
 ```
+hoặc vào trong thư mục `wheelhouse`, làm theo `Máy chạy:` trong  `readme.txt` trong đó.
+
 ## Run:
 ```bash
 python app.py
