@@ -14,6 +14,7 @@ from flask_sqlalchemy import SQLAlchemy  # pip install Flask-SQLAlchemy
 from functools import wraps
 from flask import make_response
 import datetime
+import string
 
 from aiLibs.ProjectLog import taLogClass, tt
 
@@ -120,7 +121,7 @@ def logout():  # Xóa thông tin người dùng trong session
     return redirect(url_for('index'))
 
 
-import string
+
 
 
 def CodelandUsernameValidation(strParam):
