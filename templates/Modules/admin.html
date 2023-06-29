@@ -1,0 +1,95 @@
+{% extends "ta_base.html" %}
+
+{% block Contents %}
+    <div class="container mt-4">
+        <h1>Thay đổi quyền các User</h1>
+        <script type="text/javascript">
+		        function myFunction(id){
+					  const trs = document.querySelectorAll('#myTable tr:not(.header)')
+					  const filter = document.querySelector('#search').value
+					  const regex = new RegExp(filter, 'i')
+
+                      // Toàn bộ table
+					  //const isFoundInTds = td => regex.test(td.innerHTML)
+					  //const isFound = childrenArr => childrenArr.some(isFoundInTds)
+
+                      //Chỉ cột thứ k:
+                      const columnIndex=0
+					  const isFoundInColumn = cell => regex.test(cell.parentElement.children[columnIndex].innerHTML)
+                      const isFound = childrenArr => childrenArr.some(isFoundInColumn)
+
+					  const setTrStyleDisplay = ({ style, children }) => {
+					    style.display = isFound([
+					      ...children // <-- All columns
+					    ]) ? '' : 'none'
+					  }
+
+					  trs.forEach(setTrStyleDisplay)
+					}
+				function mClear( ){
+					document.querySelector('#search').value="";
+					myFunction();
+				}
+        </script>
+        {% import  "./taMacros.html" as forms %}
+        {{ forms.forminput_onchange_clear(mID='search', mlabel='Filter:', initValue="", btnText="Clear", fnName_onchange="myFunction", btnClear="mClear")}}
+
+        <table class="table" id="myTable">
+            <thead>
+                <tr class="header">
+                    <th>Tên người dùng</th>
+                    <th>Vai trò</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        <select class="form-select role-select" data-user="{{ user.id }}">
+                            <option value="Admin"   {% if user.role=='Admin' %}selected{% endif %}>Admin</option>
+                            <option value="Manager" {% if user.role=='Manager' %}selected{% endif %}>Manager</option>
+                            <option value="Experts"    {% if user.role=='Experts' %}selected{% endif %}>Experts</option>
+                            <option value="Teacher" {% if user.role=='Teacher' %}selected{% endif %}>Teacher</option>
+                            <option value="Supervisors" {% if user.role=='Supervisors' %}selected{% endif %}>Supervisors</option>
+                            <option value="Learner" {% if user.role=='Learner' %}selected{% endif %}>Learner</option>
+                            <option value="User" {% if user.role=='User' %}selected{% endif %}>User</option>
+                            <option value="Block" {% if user.role=='Block' %}selected{% endif %}>Block</option>
+                        </select>
+                    </td>
+                    <td><button class="btn btn-primary update-role" data-user="{{ user.id }}">Lưu</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.update-role').click(function() {
+                var user_id = $(this).data('user');
+                var role = $(`.role-select[data-user="${user_id}"]`).val();
+
+                // Gửi yêu cầu AJAX để cập nhật vai trò người dùng
+                $.ajax({
+                    url: '/admin',
+                    type: 'POST',
+                    data: JSON.stringify({ user_id: user_id, role: role }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // Xử lý phản hồi từ server (nếu cần)
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Xử lý lỗi (nếu có)
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock Contents %}

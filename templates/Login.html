@@ -1,0 +1,80 @@
+{% extends "ta_base.html" -%}
+
+{% block Contents%}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Đăng nhập</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Đăng ký</button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <!-- ============================================================================= -->
+            <h2>Đăng nhập</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="mb-3">
+                    <label for="login-username" class="form-label">Tên đăng nhập:</label>
+                    <input type="text" class="form-control" id="login-username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="login-password" class="form-label">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="login-password" name="password" required>
+                </div>
+                <div class="mb-3">
+                     <label class="checkbox"> <input type="checkbox" value="remember-me" id="remember_me" name="remember_me"> Nhớ tôi, Lần sau tự động đăng nhập </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            </form>
+            <!-- ============================================================================= -->
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <!-- ============================================================================= -->
+            <h2>Đăng ký</h2>
+            <form method="POST" action="{{ url_for('create_user') }}">
+                <div class="mb-3">
+                    <label for="register-username" class="form-label">Tên đăng nhập:</label>
+                    <p>Yêu cầu:</p>
+                    <ol>
+                        <li class="mb-3">Độ dài 4..25 ký tự</li>
+                        <li class="mb-3">Chỉ chứa ký tự ASCII (chữ cái tiếng anh), Chữ số và dấu gạch dưới, không chứa ký tự đặc biệt, không khoảng trắng (dấu cách)</li>
+                        <li class="mb-3">Bắt đầu và kết thúc không được dùng dấu gạch dưới</li>
+
+                    </ol>
+                    <input type="text" class="form-control" id="register-username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="register-password" class="form-label">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="register-password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="register-password1" class="form-label">Nhập lại Mật khẩu:</label>
+                    <input type="password" class="form-control" id="register-password1" name="password1" required>
+                </div>
+
+                {% if session['role'] == 'Admin' %}
+                    <!-- Chỗ này dành riêng cho phân quyền-->
+                    <div class="mb-3">
+                        <label for="register-role" class="form-label">Quyền:</label>
+                        <select class="form-select" id="register-role" name="role" required>
+                            <option value="Admin">Admin: Người có toàn quyền trong hệ thống</option>
+                            <option value="Manager">Manager: Người phụ trách quản lý hệ thống, sắp xếp nhân sự, tài nguyên,...</option>
+                            <option value="Experts">Experts: Chuyên gia hỗ trợ </option>
+                            <option value="Teacher">Teacher: giảng dạy, post bài, chấm điểm, chăm sóc học viên</option>
+                            <option value="Supervisors">Supervisors: Hỗ trợ giảng viên các việc vặt ngoài việc giảng dạy</option>
+                            <option value="Learner">Learner: Học viên chính thức</option>
+                            <option value="User">Mặc định, được học các khoá cộng đồng, miễn phí</option>
+                            <option value="Block">Block: Những user phạm quy, nhưng hệ thống không xoá đi, để sau nếu cần thì phục hồi</option>
+                        </select>
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </form>
+            <!-- ============================================================================= -->
+        </div>
+    </div>
+ {% endblock Contents%}

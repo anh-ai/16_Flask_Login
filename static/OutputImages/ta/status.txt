@@ -1,0 +1,4 @@
+• OK: Scancode status
+• [3, 3]: Number of scancode [image1, image2] 
+• NG: cfgPosition status (Left-Right deviation: True, Top-Bottom deviation: True)
+• 7: Number of different positions between 2 pictures

@@ -1,0 +1,54 @@
+
+{% macro forminput(mID, mlabel, initValue, btnText)%}
+<form >
+    <div class="input-group mt-4">
+        <span class="input-group-text" style="width:250px;">{{mlabel}}</span>
+        <input type="text" class="form-control" id="{{mID}}NameInput" value= "{{ initValue }}" required >
+        <span class="input-group-text">
+            <button type="button" class="btn btn-primary" onclick="fnUpdate('{{mID}}')"  style="width:130px;">{{btnText}}</button>
+        </span>
+    </div>
+</form>
+<br>
+{% endmacro %}
+
+<H1>Params Config</H1>
+<hr>
+<h3>Position:</h3>
+<h5>Sai số lệch vị:</h5>
+<p>Giá trị này dùng đề xác định sai số cho phép trong khi đo lệch vị. Ví dụ: 10 nghĩa là 10% của nửa tổng khoảng cách 2 bên (hoặc trên dưới), nếu vị trí cả cụm di dịch trong khoảng này nghĩa là vẫn OK<br>
+Cụ thể: ví dụ tổng khoảng trắng trên dưới là 100px, như vậy 1 nửa là 50px, sai số cho phép 10% của 50px nghĩa là được phép di dịch 5px thì vẫn coi là OK
+</p>
+{{ forminput('inp1', 'Threshold_percent_misplaced:', threshold_percent_misplaced, "Update" ) }}
+
+<h3>Difference:</h3>
+<h5>Đây là config</h5>
+<p>Khi thay đổi ngưỡng so sánh, giá trị của sự so sánh sẽ khác nhau. Cần cân nhắc rất kỹ khi thay đổi tham số này.<br>
+    Giá trị này ảnh hưởng đến so sánh sai thông tin, thừa mực, thiếu mực.
+</p>
+{{ forminput('inp2', 'CompareThreshold:', CompareThreshold, "Update" ) }}
+
+<script>
+    function fnUpdate(mID){
+        event.preventDefault();
+        var Value="";
+        Value = $('#'+mID+"NameInput").val();
+
+        $.ajax({
+            url: '/update',
+            type: 'POST',
+            data: { action : 'Update',
+                    mID: mID,
+                    Value: Value,
+                    },
+            success: function(response) {
+                if (response.hasOwnProperty("message")) {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    }
+</script>

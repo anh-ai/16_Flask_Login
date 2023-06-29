@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang chủ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <style>
+        .navbar-ta {
+            font-size: 18px;
+            background-color: #3B2A94;
+            //height: 100px; /* Thay đổi chiều cao navbar thành giá trị mong muốn */
+            background-image: url('{{ url_for('static', filename='images/img11.png') }}');
+            background-size: 100% auto;  /* Rộng - cao*/
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+
+</head>
+<body>
+     <nav class="navbar navbar-expand-lg navbar-dark navbar-ta"  >
+        <div class="container">
+            <a class="navbar-brand" href="#">Fox.AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if session['role'] in ['Admin'] %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">User managerment</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-text">
+                {% if session['username'] %}
+                    <span class="text-light me-3">Hi, {{ session['username'] }} [{{ session['role'] }}]</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-warning">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4" style="min-height:70vh;">
+        {% block Contents%}{% endblock Contents%}
+    </div>
+
+<!--     <div class="container-fluid"><img src="{{ url_for('static', filename='images/banner.png') }}" alt="" style="width:100%; height:auto;max-height:160px;"/></div>-->
+<div class="tacontainer-fluid">
+  <img src="{{ url_for('static', filename='images/banner2.png') }}" alt="" style="width:100%; height:auto; max-height:200px;"/>
+  <div class="banner-text">
+    <div class="main-text">Foxconn.AI</div>
+    <div class="sub-text">Power Your Future!</div>
+  </div>
+</div>
+
+<style>
+    .tacontainer-fluid {
+      position: relative;
+    }
+
+    .banner-text {
+      position: absolute;
+      top: 50%;
+      left: 33.33%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1;
+    }
+
+    .main-text {
+      font-family: Garet, Arial, sans-serif;
+      font-size: 4vw; /* Tỷ lệ tỷ lệ thuận với chiều rộng của ảnh */
+      font-weight: bold;
+      color: white;
+      margin-bottom: -0.4em;
+    }
+
+    .sub-text {
+      font-family: "DejaVu Serif", serif;
+      font-size: 2vw; /* Tỷ lệ tỷ lệ thuận với chiều rộng của ảnh */
+      color: yellow;
+    }
+</style>
+</body>
+</html>

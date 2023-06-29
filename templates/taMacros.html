@@ -1,0 +1,25 @@
+{% macro forminput(mID, mlabel, initValue, btnText, fnName="fnUpdate",label_width="auto", button_width="auto")%}
+<form >
+    <div class="input-group mt-4">
+        <span class="input-group-text" style="width:{{label_width}};">{{mlabel}}</span>
+        <input type="text" class="form-control" id="{{mID}}" value= "{{ initValue }}" required >
+        <span class="input-group-text">
+            <button type="button" class="btn btn-primary" onclick="{{fnName}}('{{mID}}')"  style="width:{{button_width}};">{{btnText}}</button>
+        </span>
+    </div>
+</form>
+<br>
+{% endmacro %}
+
+{% macro forminput_onchange_clear(mID, mlabel, initValue, btnText, fnName_onchange="fnUpdate", btnClear="btnClear", label_width="auto", button_width="auto")%}
+<form >
+    <div class="input-group mt-4">
+        <span class="input-group-text" style="width:{{label_width}};">{{mlabel}}</span>
+        <input type="text" class="form-control" id="{{mID}}" value= "{{ initValue }}" oninput="{{fnName_onchange}}('{{mID}}')"  required >
+        <span class="input-group-text">
+            <button type="button" class="btn btn-danger"  style="width:{{button_width}};"  onclick="{{btnClear}}()">{{btnText}}</button>
+        </span>
+    </div>
+</form>
+<br>
+{% endmacro %}
